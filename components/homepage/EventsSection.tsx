@@ -1,25 +1,55 @@
-'use client';
+type Event = {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+};
 
-import { eventsData } from '@/data/mock-events';
+type Props = {
+  events: Event[];
+};
 
-export default function EventsSection() {
+export default function NoticeBoard({ events }: Props) {
   return (
-    <section className="bg-gray-50 py-16">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-4xl font-bold mb-12 text-center">Próximos Eventos</h2>
-        <div className="space-y-6">
-          {eventsData.map((event) => (
-            <div key={event.id} className="bg-white rounded-lg shadow p-6 flex flex-col md:flex-row justify-between items-start md:items-center">
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold mb-2">{event.title}</h3>
-                <p className="text-gray-600 mb-2">📅 {event.date}</p>
-                <p className="text-gray-700">{event.description}</p>
-              </div>
-              <button className="mt-4 md:mt-0 md:ml-6 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition">
-                Inscrever-se
-              </button>
-            </div>
-          ))}
+    <section className="notice-section">
+      <div className="section-header">
+        <h2>QUADRO DE AVISOS</h2>
+      </div>
+
+      <div className="notice-grid">
+        <div className="notice-panel">
+          <h3>Próximos Eventos</h3>
+
+          {events.length === 0 ? (
+            <p className="empty-state">
+              Não há eventos no momento
+            </p>
+          ) : (
+            events.map((event) => (
+              <article className="event-item" key={event.id}>
+                <span>{event.date}</span>
+
+                <h4>{event.title}</h4>
+
+                <p>{event.description}</p>
+
+                <small>{event.location}</small>
+              </article>
+            ))
+          )}
+        </div>
+
+        <div className="notice-panel">
+          <h3>Anúncios</h3>
+
+          <p className="announcement">
+            Acompanhe as principais informações e comunicados da AFUPM.
+          </p>
+
+          <a href="/anuncios">
+            Ver todos os anúncios →
+          </a>
         </div>
       </div>
     </section>
