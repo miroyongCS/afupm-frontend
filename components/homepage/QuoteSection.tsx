@@ -1,23 +1,46 @@
-'use client';
+"use client";
 
-import { quotes } from '@/data/quotes';
-import { useState, useEffect } from 'react';
+import { useState } from "react";
+import type { Quote } from "@/data/quotes";
 
-export default function QuoteSection() {
-  const [quote, setQuote] = useState(quotes[0]);
+type Props = {
+  quotes: Quote[];
+};
 
-  useEffect(() => {
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    setQuote(randomQuote);
-  }, []);
+export default function QuoteSection({ quotes }: Props) {
+  const [current, setCurrent] = useState(0);
+
+  const quote = quotes[current];
+
+  function nextQuote() {
+    setCurrent((value) => (value + 1) % quotes.length);
+  }
+
+  function previousQuote() {
+    setCurrent((value) => (value - 1 + quotes.length) % quotes.length);
+  }
 
   return (
-    <section className="bg-gray-50 py-16">
-      <div className="max-w-3xl mx-auto px-4 text-center">
-        <blockquote className="text-3xl font-light italic text-gray-800 mb-4">
-          "{quote.text}"
-        </blockquote>
-        <p className="text-lg text-gray-600">— {quote.author}</p>
+    <section className="quote-section">
+      <div className="quote-container">
+        <span className="quote-mark">“</span>
+
+        <blockquote>{quote.text}</blockquote>
+
+        <div className="quote-meta">
+          <span>Palavra dos Verdadeiros Pais</span>
+          <span>Semana {quote.weekNumber}</span>
+        </div>
+
+        <div className="quote-controls">
+          <button onClick={previousQuote}>←</button>
+
+          <span>
+            {current + 1} / {quotes.length}
+          </span>
+
+          <button onClick={nextQuote}>→</button>
+        </div>
       </div>
     </section>
   );
