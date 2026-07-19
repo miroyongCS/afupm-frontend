@@ -1,12 +1,56 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+const slides = [
+  {
+    title: "Famílias felizes, mundo de paz",
+    subtitle: "Construindo um futuro de amor, união e esperança.",
+  },
+  {
+    title: "Uma nova visão para a humanidade",
+    subtitle: "Conectando pessoas, famílias e comunidades.",
+  },
+];
+
 export default function Hero() {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((previous) => (previous + 1) % slides.length);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const slide = slides[current];
+
   return (
-    <section className="bg-gradient-to-r from-primary to-primary-dark text-white py-20">
-      <div className="max-w-7xl mx-auto px-4 text-center">
-        <h2 className="text-5xl font-bold mb-4">Bem-vindo à AFUPM</h2>
-        <p className="text-xl mb-8">Associação de Futebol da Universidade Portuguesa</p>
-        <button className="bg-white text-primary px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition">
-          Saiba Mais
-        </button>
+    <section className="hero">
+      <div className="hero-overlay">
+        <div className="hero-content">
+          <p className="eyebrow">AFUPM</p>
+
+          <h1>{slide.title}</h1>
+
+          <p>{slide.subtitle}</p>
+
+          <button className="primary-button">
+            Conheça mais
+          </button>
+        </div>
+
+        <div className="hero-dots">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              className={index === current ? "active" : ""}
+              onClick={() => setCurrent(index)}
+              aria-label={`Slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
